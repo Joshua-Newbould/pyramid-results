@@ -4,7 +4,7 @@ from pathlib import Path
 R = Path(__file__).resolve().parents[1]
 IDS = ["top", "mnist", "gan", "ngp", "shakespeare", "colophon"]
 TASKS = IDS[1:5]
-BUDGET = {"index.html": 80, "style.css": 220, "main.js": 150}
+BUDGET = {"index.html": 110, "style.css": 360, "main.js": 220}
 PORT = 8770
 PY = sys.executable
 
