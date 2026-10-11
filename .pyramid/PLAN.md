@@ -19,3 +19,4 @@ compute: RTX 4080 SUPER shared with sibling nodes; PY=/home/josh/miniconda3/envs
 ## Run log
 | run | started | passed/total | re-runs | escalations | nodes USD | orchestrator USD | wall clock | notes |
 |---|---|---|---|---|---|---|---|---|
+| 20261011-r4 (shared) | 00:34Z | 4/4 | 0 | 0 | 0.382 | shared | 3.0 min | design lint passed; data re-collected and one prose sentence fixed after the gan escalation |
