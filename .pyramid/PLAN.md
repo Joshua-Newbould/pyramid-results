@@ -20,3 +20,8 @@ compute: RTX 4080 SUPER shared with sibling nodes; PY=/home/josh/miniconda3/envs
 | run | started | passed/total | re-runs | escalations | nodes USD | orchestrator USD | wall clock | notes |
 |---|---|---|---|---|---|---|---|---|
 | 20261011-r4 (shared) | 00:34Z | 4/4 | 0 | 0 | 0.382 | shared | 3.0 min | design lint passed; data re-collected and one prose sentence fixed after the gan escalation |
+
+## Round 5 - interactivity (run 20261011-site-v2, one shared run with the four repos)
+Goals: light/dark toggle; draw-a-digit classifier in the browser (CNN weights exported); GAN epoch scrubber and latent-walk scrubber; NGP loupe and training-step scrubber; Shakespeare generation in the browser (transformer weights exported); curve hover readouts; a method table per chapter; the folio design carried through by opus.
+Nodes: mnist-export, gan-export, ngp-export, shakespeare-export (sonnet; shakespeare on haiku by explore pick; gates are the orchestrator's check_export.py) -> site-gates (sonnet, shared layer, exploration override) -> site-models (sonnet), site-widgets (sonnet) -> design (opus high, user preference).
+Criteria: tools/check.py all (data, html, prose, browser, design in both schemes) and node tools/check_models.js (JS forward passes match the Python fixtures).
