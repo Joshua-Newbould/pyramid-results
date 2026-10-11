@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Four small experiments</title>
+<link rel="stylesheet" href="style.css">
+<script src="main.js" defer></script>
+</head>
+<body>
+<header id="top"><h1>Four small experiments</h1> <span>Training curves, samples and numbers from one afternoon on one GPU.</span></header>
+<main>
+<section id="mnist"><h2>MNIST</h2><p class="lede">A convolutional neural network with 80,602 parameters trained on MNIST for 1,400 iterations in 9.3 seconds. The model reached 98.75% accuracy on the test set.</p></section>
+<section id="gan"><h2>GAN</h2><p class="lede">A DCGAN with 1.58 million parameters trained on CIFAR-10 for 66 epochs in 300 seconds. The generator produced images with a diversity ratio of 0.5 by the final epoch.</p></section>
+<section id="ngp"><h2>Hash-grid image</h2><p class="lede">Instant-NGP with 8.4 million parameters fit to a 2D image over 9,392 training steps in 240 seconds. The model achieved a PSNR of 39.9 dB on wave.jpg.</p></section>
+<section id="shakespeare"><h2>Shakespeare</h2><p class="lede">A character-level transformer with 818,048 parameters trained on tiny Shakespeare for 59,358 steps in 240 seconds. The model achieved a validation loss of 1.48.</p></section>
+</main>
+<footer id="colophon">Each experiment lives in its own repo: mnist-cnn, dcgan-cifar10, instant-ngp-2d and tiny-shakespeare. Set in Georgia and the system sans.</footer>
+</body>
+</html>
