@@ -9,5 +9,5 @@ for t in ["mnist", "gan", "ngp", "shakespeare"]:
         shutil.copy(f, R / "data" / t / f.name)
     m = json.loads((src / "metrics.json").read_text())
     m["artifacts"] = [f"data/{t}/{Path(a).name}" for a in m["artifacts"]]
-    tasks.append({k: m[k] for k in ["task", "title", "params", "train_seconds", "device", "curves", "final", "artifacts"]})
+    tasks.append({k: m[k] for k in ["task", "title", "params", "train_seconds", "device", "curves", "final", "artifacts"]} | {k: m[k] for k in ["config", "snapshot_steps"] if k in m})
 (R / "data" / "index.json").write_text(json.dumps({"tasks": tasks}))

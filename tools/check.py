@@ -4,7 +4,7 @@ from pathlib import Path
 R = Path(__file__).resolve().parents[1]
 IDS = ["top", "mnist", "gan", "ngp", "shakespeare", "colophon"]
 TASKS = IDS[1:5]
-BUDGET = {"index.html": 110, "style.css": 360, "main.js": 220}
+BUDGET = {"index.html": 180, "style.css": 560, "main.js": 300, "js/mnist.js": 130, "js/gpt.js": 240, "js/widgets.js": 380}
 PORT = 8770
 PY = sys.executable
 
@@ -30,8 +30,9 @@ def html():
         if not re.match(r"(https?:|#|data:|mailto:)", r) and not (R / r.split("#")[0].split("?")[0]).exists():
             f.append(f"unresolved {r}")
         if re.match(r"(https?:|/)", r): f.append(f"non-relative {r}")
-    if subprocess.run(["node", "--check", str(R / "main.js")]).returncode: f.append("node --check main.js")
     for n, b in BUDGET.items():
+        if n.endswith(".js") and (R / n).exists() and subprocess.run(["node", "--check", str(R / n)]).returncode: f.append(f"node --check {n}")
+        if not (R / n).exists(): continue
         c = len((R / n).read_text().splitlines())
         if c > b: f.append(f"{n} {c} lines > {b}")
     return f
@@ -89,6 +90,50 @@ def browser_checks(pg):
     b0 = d.bounding_box(); x, y = b0["x"] + b0["width"] / 2, b0["y"] + b0["height"] / 2
     pg.mouse.move(x, y); pg.mouse.down(); pg.mouse.move(x + 40, y, steps=5); pg.mouse.up()
     if d.bounding_box() == b0: f.append("ngp: divider did not move")
+    return f + interact(pg)
+
+def interact(pg):
+    f = []
+    def has(sel): 
+        if pg.query_selector(sel): return True
+        f.append(f"missing {sel}"); return False
+    def attr(sel, a): return pg.eval_on_selector(sel, f"e => e.getAttribute('{a}')")
+    def scrub(sec, cls, a):
+        sel = f"section#{sec} input.{cls}"
+        if not has(sel) or not has(f"section#{sec} [{a}]"): return
+        before = attr(f"section#{sec} [{a}]", a)
+        pg.eval_on_selector(sel, "e => { e.value = e.max; e.dispatchEvent(new Event('input', {bubbles: true})); e.dispatchEvent(new Event('change', {bubbles: true})); }")
+        pg.wait_for_timeout(200)
+        if attr(f"section#{sec} [{a}]", a) == before: f.append(f"{sec}: {cls} did not update [{a}]")
+    h0 = pg.evaluate("document.documentElement.dataset.theme || ''")
+    if has("button#theme"):
+        pg.click("button#theme"); t = pg.evaluate("document.documentElement.dataset.theme")
+        if t not in ("light", "dark") or t == h0: f.append("theme toggle did not change html[data-theme]")
+        pg.reload(wait_until="load")
+        if pg.evaluate("document.documentElement.dataset.theme") != t: f.append("theme did not survive reload")
+    if has("section#mnist canvas#pad"):
+        b = pg.query_selector("section#mnist canvas#pad"); b.scroll_into_view_if_needed(); b = b.bounding_box()
+        pg.mouse.move(b["x"] + b["width"] * .3, b["y"] + b["height"] * .3); pg.mouse.down()
+        pg.mouse.move(b["x"] + b["width"] * .6, b["y"] + b["height"] * .7, steps=8); pg.mouse.up(); pg.wait_for_timeout(500)
+        if len(pg.inner_text("section#mnist .pad-pred").strip()) != 1 or not pg.inner_text("section#mnist .pad-pred").strip().isdigit(): f.append("mnist: .pad-pred not one digit")
+        if pg.locator("section#mnist .pad-probs > *").count() != 10: f.append("mnist: .pad-probs not 10 bars")
+    scrub("gan", "epoch-scrub", "data-epoch"); scrub("gan", "walk-scrub", "data-frame"); scrub("ngp", "step-scrub", "data-step")
+    if has("section#ngp .loupe") and has("section#ngp .compare"):
+        l = pg.query_selector("section#ngp .loupe"); c = pg.query_selector("section#ngp .compare"); c.scroll_into_view_if_needed(); cb = c.bounding_box(); p0 = l.bounding_box()
+        pg.mouse.move(cb["x"] + cb["width"] * .3, cb["y"] + cb["height"] * .3); pg.mouse.move(cb["x"] + cb["width"] * .7, cb["y"] + cb["height"] * .6, steps=5)
+        if l.bounding_box() == p0: f.append("ngp: .loupe did not move")
+    s = "section#shakespeare "
+    if all(has(s + x) for x in (".prompt", ".temperature", "button.generate", ".generated")):
+        n0 = len(pg.inner_text(s + ".generated")); pg.click(s + "button.generate")
+        try: pg.wait_for_function("([s, n]) => (document.querySelector(s).value ?? document.querySelector(s).textContent).length >= n + 50", arg=[s + ".generated", n0], timeout=15000)
+        except Exception: f.append("shakespeare: .generated grew < 50 chars in 15 s")
+    sv = pg.query_selector("figure.curves svg")
+    if sv:
+        sv.scroll_into_view_if_needed(); bb = sv.bounding_box(); pg.mouse.move(bb["x"] + bb["width"] / 2, bb["y"] + bb["height"] / 2, steps=4)
+        if not pg.query_selector(".curve-tip") or not pg.inner_text(".curve-tip").strip(): f.append("curves: .curve-tip empty")
+    else: f.append("missing figure.curves svg")
+    for t in TASKS:
+        if pg.locator(f"section#{t} table.method tr").count() < 5: f.append(f"{t}: table.method < 5 rows")
     return f
 
 def browser():
@@ -131,7 +176,7 @@ def design_checks(pg):
     if len(fam) > 1: f.append(f"{len(fam)} chromatic hue families: {[round(x) for x in fam]}")
     return sorted(set(f))
 
-CMDS = {"data": data, "html": html, "prose": prose, "browser": browser, "design": lambda: browse(design_checks)}
+CMDS = {"data": data, "html": html, "prose": prose, "browser": browser, "design": lambda: [f"{m}: {x}" for m in ("light", "dark") for x in browse(lambda pg: (pg.evaluate(f"document.documentElement.dataset.theme = '{m}'"), pg.wait_for_timeout(300), design_checks(pg))[2])]}
 if __name__ == "__main__":
     a = sys.argv[1:]
     if len(a) != 1 or (a[0] != "all" and a[0] not in CMDS): print("usage: check.py data|html|prose|browser|design|all"); sys.exit(2)

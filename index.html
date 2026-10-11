@@ -6,9 +6,13 @@
 <title>Four small experiments</title>
 <link rel="stylesheet" href="style.css">
 <script src="main.js" defer></script>
+<script src="js/mnist.js" defer></script>
+<script src="js/gpt.js" defer></script>
+<script src="js/widgets.js" defer></script>
 </head>
 <body>
 <header id="top">
+<button id="theme" type="button" aria-label="Switch between light and dark">Theme</button>
 <h1>Four <em>small</em> experiments</h1>
 <p class="sub">Training curves, samples and numbers from one afternoon on one GPU.</p>
 <ol class="toc">
@@ -19,10 +23,14 @@
 </ol>
 </header>
 <main>
-<section id="mnist"><h2>MNIST</h2><p class="lede">A convolutional neural network with 80,602 parameters trained on MNIST for 1,400 iterations in 9.3 seconds. The model reached 98.75% accuracy on the test set.</p></section>
-<section id="gan"><h2>GAN</h2><p class="lede">A DCGAN with 1.73 million parameters trained on CIFAR-10 for 177 epochs in 300 seconds. The generator reached a diversity ratio of 1.07 by the final epoch, with the strip below showing one row of fixed-noise samples per epoch.</p></section>
-<section id="ngp"><h2>Hash-grid image</h2><p class="lede">Instant-NGP with 8.4 million parameters fit to a 2D image over 9,392 training steps in 240 seconds. The model achieved a PSNR of 39.9 dB on wave.jpg.</p></section>
-<section id="shakespeare"><h2>Shakespeare</h2><p class="lede">A character-level transformer with 818,048 parameters trained on tiny Shakespeare for 59,358 steps in 240 seconds. The model achieved a validation loss of 1.48.</p></section>
+<section id="mnist"><h2>MNIST</h2><p class="lede">A convolutional neural network with 80,602 parameters trained on MNIST for 1,400 iterations in 9.3 seconds. The model reached 98.75% accuracy on the test set.</p>
+<figure class="play"><canvas id="pad" width="280" height="280" aria-label="Drawing pad"></canvas><div class="pad-side"><canvas id="pad28" width="28" height="28" aria-hidden="true"></canvas><div class="pad-pred" aria-live="polite"></div><div class="pad-probs"></div><button class="clear" type="button">Clear</button></div></figure></section>
+<section id="gan"><h2>GAN</h2><p class="lede">A DCGAN with 1.73 million parameters trained on CIFAR-10 for 177 epochs in 300 seconds. The generator reached a diversity ratio of 1.07 by the final epoch, with the strip below showing one row of fixed-noise samples per epoch.</p>
+<figure class="play"><div class="pane"><div class="film pix" data-epoch="0"></div><label>Training snapshot <input class="epoch-scrub" type="range" min="0" max="73" value="0"></label><output></output></div><div class="pane"><div class="film pix" data-frame="0"></div><label>Latent walk <input class="walk-scrub" type="range" min="0" max="23" value="0"></label><output></output><button class="walk-play" type="button">Play</button></div></figure></section>
+<section id="ngp"><h2>Hash-grid image</h2><p class="lede">Instant-NGP with 8.4 million parameters fit to a 2D image over 9,392 training steps in 240 seconds. The model achieved a PSNR of 39.9 dB on wave.jpg.</p>
+<figure class="play"><div class="pane"><div class="film" data-step="0"></div><label>Training step <input class="step-scrub" type="range" min="0" max="15" value="0"></label><output class="step-out"></output></div></figure></section>
+<section id="shakespeare"><h2>Shakespeare</h2><p class="lede">A character-level transformer with 818,048 parameters trained on tiny Shakespeare for 59,358 steps in 240 seconds. The model achieved a validation loss of 1.48.</p>
+<figure class="play"><div class="pane"><label>Prompt <input class="prompt" type="text" value="ROMEO:"></label><label>Temperature <input class="temperature" type="range" min="0.2" max="1.5" step="0.05" value="0.8"></label><output class="temp-out"></output><button class="generate" type="button">Generate</button></div><div class="generated" aria-live="off"></div></figure></section>
 </main>
 <footer id="colophon">
 <h2>Colophon</h2>

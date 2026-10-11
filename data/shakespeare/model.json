@@ -1,0 +1,414 @@
+{
+ "vocab": "\n !$&',-.3:;?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+ "n_layer": 4,
+ "n_head": 4,
+ "n_embd": 128,
+ "block_size": 128,
+ "params": [
+  {
+   "name": "tok.weight",
+   "shape": [
+    65,
+    128
+   ]
+  },
+  {
+   "name": "pos.weight",
+   "shape": [
+    128,
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.l1.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.l1.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.l2.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.l2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.qkv.weight",
+   "shape": [
+    384,
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.qkv.bias",
+   "shape": [
+    384
+   ]
+  },
+  {
+   "name": "blocks.0.o.weight",
+   "shape": [
+    128,
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.o.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.mlp.0.weight",
+   "shape": [
+    512,
+    128
+   ]
+  },
+  {
+   "name": "blocks.0.mlp.0.bias",
+   "shape": [
+    512
+   ]
+  },
+  {
+   "name": "blocks.0.mlp.2.weight",
+   "shape": [
+    128,
+    512
+   ]
+  },
+  {
+   "name": "blocks.0.mlp.2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.l1.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.l1.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.l2.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.l2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.qkv.weight",
+   "shape": [
+    384,
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.qkv.bias",
+   "shape": [
+    384
+   ]
+  },
+  {
+   "name": "blocks.1.o.weight",
+   "shape": [
+    128,
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.o.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.mlp.0.weight",
+   "shape": [
+    512,
+    128
+   ]
+  },
+  {
+   "name": "blocks.1.mlp.0.bias",
+   "shape": [
+    512
+   ]
+  },
+  {
+   "name": "blocks.1.mlp.2.weight",
+   "shape": [
+    128,
+    512
+   ]
+  },
+  {
+   "name": "blocks.1.mlp.2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.l1.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.l1.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.l2.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.l2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.qkv.weight",
+   "shape": [
+    384,
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.qkv.bias",
+   "shape": [
+    384
+   ]
+  },
+  {
+   "name": "blocks.2.o.weight",
+   "shape": [
+    128,
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.o.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.mlp.0.weight",
+   "shape": [
+    512,
+    128
+   ]
+  },
+  {
+   "name": "blocks.2.mlp.0.bias",
+   "shape": [
+    512
+   ]
+  },
+  {
+   "name": "blocks.2.mlp.2.weight",
+   "shape": [
+    128,
+    512
+   ]
+  },
+  {
+   "name": "blocks.2.mlp.2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.l1.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.l1.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.l2.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.l2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.qkv.weight",
+   "shape": [
+    384,
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.qkv.bias",
+   "shape": [
+    384
+   ]
+  },
+  {
+   "name": "blocks.3.o.weight",
+   "shape": [
+    128,
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.o.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.mlp.0.weight",
+   "shape": [
+    512,
+    128
+   ]
+  },
+  {
+   "name": "blocks.3.mlp.0.bias",
+   "shape": [
+    512
+   ]
+  },
+  {
+   "name": "blocks.3.mlp.2.weight",
+   "shape": [
+    128,
+    512
+   ]
+  },
+  {
+   "name": "blocks.3.mlp.2.bias",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "ln.weight",
+   "shape": [
+    128
+   ]
+  },
+  {
+   "name": "ln.bias",
+   "shape": [
+    128
+   ]
+  }
+ ],
+ "norm": {
+  "type": "layernorm",
+  "eps": 1e-05
+ },
+ "tied_embeddings": true,
+ "fixture": {
+  "prompt": "?\n\nGREMIO:\nGood morrow, neighbou",
+  "next_logits": [
+   -5.4375,
+   1.1484375,
+   4.3125,
+   -11.75,
+   -9.6875,
+   -0.9296875,
+   3.6875,
+   -5.34375,
+   1.6953125,
+   -11.5,
+   2.8125,
+   2.875,
+   0.74609375,
+   -3.5,
+   -3.78125,
+   -4.0625,
+   -10.875,
+   -6.3125,
+   -7.9375,
+   -1.4296875,
+   -5.0,
+   -6.8125,
+   -6.28125,
+   -9.4375,
+   -6.0625,
+   -4.21875,
+   -4.25,
+   -8.5625,
+   -10.75,
+   -14.75,
+   -2.765625,
+   -4.90625,
+   0.333984375,
+   -1.40625,
+   -5.3125,
+   -12.0625,
+   -10.0625,
+   -2.625,
+   -9.5625,
+   0.96484375,
+   2.859375,
+   4.96875,
+   0.158203125,
+   2.6875,
+   1.8984375,
+   5.6875,
+   2.59375,
+   0.57421875,
+   -4.46875,
+   -3.71875,
+   -0.474609375,
+   5.375,
+   12.0,
+   -3.84375,
+   0.85546875,
+   -2.25,
+   16.75,
+   7.53125,
+   7.5,
+   3.234375,
+   -4.46875,
+   -2.6875,
+   0.318359375,
+   4.09375,
+   -6.03125
+  ]
+ }
+}
