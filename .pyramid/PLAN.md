@@ -2,7 +2,7 @@
 
 run_id: 20261011-r4 (one run shared by the five round-4 plans; node specs live in the Workflow call and the run's journal)
 tier: build - four nodes: s0-collect, s1-content, s1b-prose, s2-design
-routing basis: routing.md derived 2026-10-11T00:04Z (implement sonnet medium, write sonnet low, review sonnet medium); explore-pick: none
+routing basis: routing.md derived 2026-10-11T00:04Z (implement sonnet medium, write sonnet low, review sonnet medium); explore-pick: s1b-prose on haiku (explore)
 compute: RTX 4080 SUPER shared with sibling nodes; PY=/home/josh/miniconda3/envs/annoflow/bin/python; data under ~/repos/data
 
 ## Goals
