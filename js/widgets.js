@@ -3,10 +3,9 @@ const $ = (s, r = document) => r.querySelector(s);
 const root = document.documentElement;
 const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const saved = localStorage.getItem("theme");
-if (saved) root.dataset.theme = saved;
+root.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 $("#theme").onclick = () => {
-  const now = root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  root.dataset.theme = now === "dark" ? "light" : "dark";
+  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
   localStorage.setItem("theme", root.dataset.theme);
 };
 const ready = () => new Promise((ok) => { const t = setInterval(() => { if ($("#shakespeare pre")) { clearInterval(t); ok(); } }, 40); });
@@ -32,7 +31,7 @@ function tips(tasks) {
       const r = svg.getBoundingClientRect(), vx = ((e.clientX - r.left) / r.width) * W;
       const p = pts.reduce((a, b) => (Math.abs(b.px - vx) < Math.abs(a.px - vx) ? b : a));
       dot.setAttribute("cx", p.px); dot.setAttribute("cy", p.py); dot.setAttribute("opacity", 1);
-      tip.textContent = `${name.replace(/_/g, " ")}  step ${fmt(p.x)}  ${fmt(p.y)}`;
+      tip.textContent = `${name.replace(/_/g, " ")} · step ${fmt(p.x)} · ${fmt(p.y)}`;
       tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px";
       tip.style.top = e.clientY - 36 + "px";
       tip.classList.add("on");
@@ -111,9 +110,9 @@ function film(view, input, attr, src, horiz, ar, label) {
 
 function gan() {
   const s = $("#gan"), out = s.querySelectorAll("output");
-  film($("[data-epoch]", s), $(".epoch-scrub", s), "data-epoch", "data/gan/progress.png", false, "8/1", (i, n) => (out[0].textContent = `snapshot ${i + 1} of ${n}`));
+  film($("[data-epoch]", s), $(".epoch-scrub", s), "data-epoch", "data/gan/progress.png", false, "8/1", (i, n) => (out[0].textContent = `epoch ${i + 1} of ${n}`));
   const walk = $(".walk-scrub", s), play = $(".walk-play", s);
-  film($("[data-frame]", s), walk, "data-frame", "data/gan/walk.png", false, "8/1", (i, n) => (out[1].textContent = `step ${i + 1} of ${n}`));
+  film($("[data-frame]", s), walk, "data-frame", "data/gan/walk.png", false, "8/1", (i, n) => (out[1].textContent = `${i + 1} / ${n}`));
   let timer;
   play.hidden = still;
   play.onclick = () => {
@@ -144,7 +143,7 @@ function ngp(t) {
   loupe($(".compare", s));
   film($("[data-step]", s), $(".step-scrub", s), "data-step", "data/ngp/steps.png", true, "512/344", (i) => {
     const p = psnr.filter((q) => q.x <= steps[i]).pop() || psnr[0];
-    $(".step-out", s).textContent = `step ${steps[i].toLocaleString("en")}, ${p.y.toFixed(1)} dB`;
+    $(".step-out", s).textContent = `step ${steps[i].toLocaleString("en")} · ${p.y.toFixed(1)} dB`;
   });
 }
 
@@ -154,12 +153,12 @@ function shakespeare() {
   temp.oninput();
   go.onclick = async () => {
     if (!window.GPT) return;
-    go.disabled = true; out.textContent = prompt.value;
+    go.disabled = true; out.textContent = prompt.value; out.classList.add("typing");
     try {
       if (GPT.load) await GPT.load();
       await GPT.generate(prompt.value, 400, +temp.value, (x) => (out.textContent += x));
     } catch (e) { out.textContent += "\n[" + e.message + "]"; }
-    go.disabled = false;
+    go.disabled = false; out.classList.remove("typing");
   };
 }
 
